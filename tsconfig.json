@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "outDir": "./dist",
+    "noImplicitAny": false,
+    "module": "commonjs",
+    "declaration": true,
+    "moduleResolution": "node",
+    "target": "es5",
+    "importHelpers": true,
+    "noUnusedLocals": true,
+    "resolveJsonModule": true,
+  },
+  "include":["./src/**/*"],
+}
