@@ -8,6 +8,9 @@
     "typescript": "^3.5.1"
   },
   "devDependencies": {
+    "@types/jest": "^24.0.13",
+    "jest": "^24.8.0",
+    "ts-jest": "^24.0.2",
     "tslint-config-yoshi": "^4.4.3"
   },
   "scripts": {
