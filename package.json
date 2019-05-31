@@ -8,7 +8,9 @@
     "tslint": "^5.16.0",
     "typescript": "^3.5.1"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "tslint-config-yoshi": "^4.4.3"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc",
