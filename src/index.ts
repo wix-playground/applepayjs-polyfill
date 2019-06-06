@@ -16,9 +16,11 @@ export interface InitApplePaySession {
 export const setupApplePaySession = ({
   isApplePaySetUp = true,
   paymentsEnabled = true,
-  merchantIdentifier = "",
+  merchantIdentifier = "test_merchant_id",
 }: InitApplePaySession) => {
     const innerSession = new ApplePaySessionPolyfillFactory();
+    // setup static properties
+    // that should be availabe per browser session
     innerSession.setUserSetupStatus(isApplePaySetUp);
     if (!paymentsEnabled) {
         innerSession.disablePayments();
