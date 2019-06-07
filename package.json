@@ -9,18 +9,23 @@
   },
   "devDependencies": {
     "@types/jest": "^24.0.13",
+    "@wix/wnpm-ci": "^6.1.0",
     "jest": "^24.8.0",
     "ts-jest": "^24.0.2",
     "tslint-config-yoshi": "^4.4.3"
   },
   "scripts": {
-    "test": "jest --watch",
+    "test": "jest",
     "build": "tsc",
-    "start": "tsc --watch"
+    "start": "tsc --watch",
+    "release": "wnpm-release"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/wix-playground/applepayjs-polyfill.git"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
   },
   "keywords": [],
   "author": "vitaliis@wix.com",
