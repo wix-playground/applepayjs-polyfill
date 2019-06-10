@@ -57,7 +57,7 @@ export class ApplePaySessionPolyfillFactory {
    * @param {Object} session - The current ApplePaySession.
    * @returns {PaymentContact} The PaymentContact created for billing.
    */
-  createBillingContact = function (session) {
+  createBillingContact = function (session): any {
       throw "You must implement ApplePaySessionPolyfill.createBillingContact()";
   };
 
@@ -66,7 +66,7 @@ export class ApplePaySessionPolyfillFactory {
    * @param {Object} session - The current ApplePaySession.
    * @returns {PaymentContact} The PaymentContact created for shipping.
    */
-  createShippingContact = function (session) {
+  createShippingContact = function (session): any {
       throw "You must implement ApplePaySessionPolyfill.createShippingContact()";
   };
 
@@ -75,7 +75,7 @@ export class ApplePaySessionPolyfillFactory {
    * @param {Object} session - The current ApplePaySession.
    * @returns {PaymentToken} The PaymentToken created for an authorized payment.
    */
-  createPaymentToken = function (session) {
+  createPaymentToken = function (session): any {
       throw "You must implement ApplePaySessionPolyfill.createPaymentToken()";
   };
 

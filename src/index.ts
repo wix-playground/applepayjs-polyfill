@@ -5,6 +5,9 @@ export interface InitApplePaySession {
     isApplePaySetUp?: boolean;
     paymentsEnabled?: boolean;
     merchantIdentifier?: string;
+    createShippingContact?();
+    createBillingContact?();
+    createPaymentToken?();
 }
 
 /**
@@ -17,6 +20,9 @@ export const setupApplePaySession = ({
   isApplePaySetUp = true,
   paymentsEnabled = true,
   merchantIdentifier = "test_merchant_id",
+  createShippingContact,
+  createBillingContact,
+  createPaymentToken,
 }: InitApplePaySession) => {
     const innerSession = new ApplePaySessionPolyfillFactory();
     // setup static properties
@@ -26,6 +32,10 @@ export const setupApplePaySession = ({
         innerSession.disablePayments();
     }
     innerSession.setMerchantIdentifier(merchantIdentifier);
+    innerSession.createPaymentToken = createPaymentToken;
+    innerSession.createBillingContact = createBillingContact;
+    innerSession.createShippingContact = createShippingContact;
+
     ApplePaySession.setApplePaySessionPolyfill(innerSession);
     return ApplePaySession;
 }
