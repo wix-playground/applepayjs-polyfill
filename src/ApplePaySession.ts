@@ -39,7 +39,7 @@ export class ApplePaySession {
       return ApplePaySession.__applePaySessionPolyfill.onCanMakePayments(this);
   };
 
-  static canMakePaymentsWithActiveCard = function (merchantIdentifier): boolean {
+  static canMakePaymentsWithActiveCard = function (merchantIdentifier: string): Promise<boolean> {
       return ApplePaySession.__applePaySessionPolyfill.onCanMakePaymentsWithActiveCard(this, merchantIdentifier);
   };
 
@@ -108,4 +108,10 @@ export class ApplePaySession {
           ApplePaySession.__applePaySessionPolyfill.onCompleteShippingMethodSelection(this, status, newTotal, newLineItems);
       }
   };
+
+  addEventListener = function (type: string, listener: any, options?: any): void {};
+  dispatchEvent = function (event: any): boolean {
+    return true;
+  };
+  removeEventListener = function (type: string, callback: any, options?: any): void {};
 }
