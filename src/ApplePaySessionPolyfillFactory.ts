@@ -70,6 +70,10 @@ export class ApplePaySessionPolyfillFactory {
       throw "You must implement ApplePaySessionPolyfill.createShippingContact()";
   };
 
+  createShippingMethod = function (session): any {
+    throw "You must implement ApplePaySessionPolyfill.createShippingMethod()"
+  }
+
   /**
    * Creates a PaymentToken for an authorized payment.
    * @param {Object} session - The current ApplePaySession.
@@ -303,14 +307,22 @@ export class ApplePaySessionPolyfillFactory {
   onCompleteShippingContactSelectionV3 = function (session, update) {
 
       if (!update.errors || update.errors.length === 0) {
-          var applePayPaymentAuthorizedEvent = {
-              payment: {
-                  token: this.createPaymentToken(session),
-                  billingContact: this.createBillingContact(session),
-                  shippingContact: this.createShippingContact(session)
-              }
-          };
-          session.onpaymentauthorized(applePayPaymentAuthorizedEvent);
+        if (typeof session.onshippingmethodselected === 'function') {
+            var applePayPaymentShippingMethodSelectionEvent = {
+                  shippingMethod: this.createShippingMethod(session)
+            }
+            session.onshippingmethodselected(applePayPaymentShippingMethodSelectionEvent);
+
+        } else {
+            var applePayPaymentAuthorizedEvent = {
+                payment: {
+                    token: this.createPaymentToken(session),
+                    billingContact: this.createBillingContact(session),
+                    shippingContact: this.createShippingContact(session)
+                }
+            };
+            session.onpaymentauthorized(applePayPaymentAuthorizedEvent);
+        }
       }
   };
 
@@ -323,7 +335,8 @@ export class ApplePaySessionPolyfillFactory {
    * @param {Object} newLineItems - The new line items passed to the function.
    */
   onCompleteShippingMethodSelection = function (session, status, newTotal, newLineItems) {
-
+    // @ts-ignore
+    console.error('Deprecated API');
   };
 
   /**
@@ -332,7 +345,16 @@ export class ApplePaySessionPolyfillFactory {
    * @param {Object} update - The updated shipping method.
    */
   onCompleteShippingMethodSelectionV3 = function (session, update) {
-
+    if (!update.errors || update.errors.length === 0) {
+          var applePayPaymentAuthorizedEvent = {
+              payment: {
+                  token: this.createPaymentToken(session),
+                  billingContact: this.createBillingContact(session),
+                  shippingContact: this.createShippingContact(session)
+              }
+          };
+          session.onpaymentauthorized(applePayPaymentAuthorizedEvent);
+      }
   };
 
   /**

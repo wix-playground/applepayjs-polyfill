@@ -49,6 +49,13 @@ ApplePaySessionPolyfill.createShippingContact = function (session) {
   };
 };
 
+// Re-declare the function to create a ApplePayShippingMethod for shipping
+ApplePaySessionPolyfill.createShippingMethod = function (session) {
+  return {
+    /* ... */
+  };
+};
+
 // Re-declare the function to create a PaymentToken for an authorized payment
 ApplePaySessionPolyfill.createPaymentToken = function (session) {
   return {

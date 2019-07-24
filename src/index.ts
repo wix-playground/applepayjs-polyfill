@@ -6,6 +6,7 @@ export interface InitApplePaySession {
     paymentsEnabled?: boolean;
     merchantIdentifier?: string;
     createShippingContact?();
+    createShippingMethod?();
     createBillingContact?();
     createPaymentToken?();
 }
@@ -21,6 +22,7 @@ export const setupApplePaySession = ({
   paymentsEnabled = true,
   merchantIdentifier = "test_merchant_id",
   createShippingContact,
+  createShippingMethod,
   createBillingContact,
   createPaymentToken,
 }: InitApplePaySession) => {
@@ -35,6 +37,7 @@ export const setupApplePaySession = ({
     innerSession.createPaymentToken = createPaymentToken;
     innerSession.createBillingContact = createBillingContact;
     innerSession.createShippingContact = createShippingContact;
+    innerSession.createShippingMethod = createShippingMethod;
 
     ApplePaySession.setApplePaySessionPolyfill(innerSession);
     return ApplePaySession;
