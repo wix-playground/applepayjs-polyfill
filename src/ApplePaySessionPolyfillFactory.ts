@@ -156,7 +156,7 @@ export class ApplePaySessionPolyfillFactory {
           throw "Missing total amount.";
       }
 
-      if (/^[0-9]+(\.[0-9][0-9])?$/.test(paymentRequest.total.amount) !== true) {
+      if (/^[0-9]+(\.[0-9][0-9]?)?$/.test(paymentRequest.total.amount) !== true) {
           throw "\"" + paymentRequest.total.amount + "\" is not a valid amount.";
       }
 
