@@ -1,7 +1,7 @@
 import { ApplePaySession } from './ApplePaySession';
 /**
  * @description ApplePaySessionPolyfillFactory
- * Handles inner behaviuor for ApplePaySession.
+ * Handles inner behaviour for ApplePaySession.
  * Should be singleton per payment
  */
 export class ApplePaySessionPolyfillFactory {

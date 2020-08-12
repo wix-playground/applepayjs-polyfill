@@ -109,6 +109,10 @@ export class ApplePaySession {
       }
   };
 
+  hasActiveSession = function () {
+      return ApplePaySession.__applePaySessionPolyfill.hasActiveSession;
+  }
+
   addEventListener = function (type: string, listener: any, options?: any): void {};
   dispatchEvent = function (event: any): boolean {
     return true;

@@ -40,5 +40,7 @@ export const setupApplePaySession = ({
     innerSession.createShippingMethod = createShippingMethod;
 
     ApplePaySession.setApplePaySessionPolyfill(innerSession);
-    return ApplePaySession;
+    return { ApplePaySession, hasActiveSession: function() {
+        return innerSession.hasActiveSession
+    }};
 }
