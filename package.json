@@ -1,6 +1,6 @@
 {
   "name": "applepayjs-polyfill",
-  "version": "0.0.1",
+  "version": "1.0.1",
   "description": "ApplePayJS polyfill",
   "main": "dist/index.js",
   "dependencies": {
@@ -8,6 +8,7 @@
     "typescript": "^3.5.1"
   },
   "devDependencies": {
+    "@types/applepayjs": "^3.0.0",
     "@types/jest": "^24.0.13",
     "@wix/wnpm-ci": "^6.1.0",
     "jest": "^24.8.0",

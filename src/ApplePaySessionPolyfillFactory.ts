@@ -214,11 +214,12 @@ export class ApplePaySessionPolyfillFactory {
    * @param {Object} session - The current ApplePaySession.
    * @param {MerchantSession} merchantSession - The merchant session passed to the function.
    */
-  onCompleteMerchantValidation = function (session, merchantSession) {
+  onCompleteMerchantValidation = function (session: ApplePaySession, merchantSession) {
 
-      if (typeof session.onshippingcontactselected === "function") {
-
-          var applePayShippingContactSelectedEvent = {
+      if (this.paymentRequest.requiredShippingContactFields.includes('postalAddress') 
+            && typeof session.onshippingcontactselected === "function") {
+          
+            var applePayShippingContactSelectedEvent = {
               shippingContact: this.createShippingContact(session)
           };
 

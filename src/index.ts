@@ -1,5 +1,6 @@
 import {ApplePaySessionPolyfillFactory} from './ApplePaySessionPolyfillFactory';
 import {ApplePaySession} from './ApplePaySession';
+import {createPaymentToken} from './createPaymentToken'
 
 export interface InitApplePaySession {
     isApplePaySetUp?: boolean;
@@ -8,7 +9,6 @@ export interface InitApplePaySession {
     createShippingContact?();
     createShippingMethod?();
     createBillingContact?();
-    createPaymentToken?();
 }
 
 /**
@@ -24,7 +24,6 @@ export const setupApplePaySession = ({
   createShippingContact,
   createShippingMethod,
   createBillingContact,
-  createPaymentToken,
 }: InitApplePaySession) => {
     const innerSession = new ApplePaySessionPolyfillFactory();
     // setup static properties
