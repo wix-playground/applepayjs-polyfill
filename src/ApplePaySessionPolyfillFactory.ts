@@ -160,7 +160,6 @@ export class ApplePaySessionPolyfillFactory {
           throw "\"" + paymentRequest.total.amount + "\" is not a valid amount.";
       }
 
-      this.hasActiveSession = true;
       this.paymentRequest = paymentRequest;
   };
 
@@ -177,7 +176,9 @@ export class ApplePaySessionPolyfillFactory {
    */
   onBegin = function (session) {
 
-      var applePayValidateMerchantEvent = {
+    this.hasActiveSession = true;
+
+    var applePayValidateMerchantEvent = {
           validationURL: this.validationURL
       };
 
