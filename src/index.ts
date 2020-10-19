@@ -1,3 +1,4 @@
+import { ApplePayError } from './ApplePayError';
 import {ApplePaySessionPolyfillFactory} from './ApplePaySessionPolyfillFactory';
 import {ApplePaySession} from './ApplePaySession';
 import {createPaymentToken} from './createPaymentToken'
@@ -39,7 +40,7 @@ export const setupApplePaySession = ({
     innerSession.createShippingMethod = createShippingMethod;
 
     ApplePaySession.setApplePaySessionPolyfill(innerSession);
-    return { ApplePaySession, hasActiveSession: function() {
+    return { ApplePaySession, ApplePayError, hasActiveSession: function() {
         return innerSession.hasActiveSession
     }};
 }
