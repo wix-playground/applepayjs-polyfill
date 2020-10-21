@@ -1,6 +1,10 @@
+import { InitApplePaySession } from './../index';
 import {setupApplePaySession} from '../index';
 import { aPaymentRequestBuilder } from '../mocks/PaymentRequestBuilder';
 
+const setupSessionParams = (): InitApplePaySession => {
+  return { paymentsEnabled: true, createShippingContact: () => {}, createBillingContact: () => {}, createShippingMethod: () => {}, createPaymentToken: () => ({paymentData: {}, paymentMethod: {displayName: '', network: '', paymentPass: {activationState: 'activated', primaryAccountIdentifier: '', primaryAccountNumberSuffix: '', deviceAccountIdentifier: ''} , type: 'credit'}, transactionIdentifier: 'guid'})}
+}
 
 test('canMakePayments === false if paymentsEnabled === false', () => {
   const { ApplePaySession } = setupApplePaySession({paymentsEnabled: false});
@@ -8,7 +12,7 @@ test('canMakePayments === false if paymentsEnabled === false', () => {
 })
 
 test('all callbacks are invoked with required postalAddress', () => {
-  const { ApplePaySession } = setupApplePaySession({paymentsEnabled: true, createShippingContact: () => {}, createBillingContact: () => {}, createShippingMethod: () => {}});
+  const { ApplePaySession } = setupApplePaySession(setupSessionParams());
   const payRequest = aPaymentRequestBuilder().withPostalAddress().build();
   const session = new ApplePaySession(3, payRequest);
   const spyMethodChange = jest.fn().mockImplementation(() => session.completeShippingMethodSelection({}))
@@ -27,7 +31,7 @@ test('all callbacks are invoked with required postalAddress', () => {
 })
 
 test('onshippingcontactselected is not invoked without required postalAddress', () => {
-  const { ApplePaySession } = setupApplePaySession({paymentsEnabled: true, createShippingContact: () => {}, createBillingContact: () => {}, createShippingMethod: () => {}});
+  const { ApplePaySession } = setupApplePaySession(setupSessionParams());
   const payRequest = aPaymentRequestBuilder().build();
   const session = new ApplePaySession(3, payRequest);
   const spyMethodChange = jest.fn();
