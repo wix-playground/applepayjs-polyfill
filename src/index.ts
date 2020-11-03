@@ -10,6 +10,7 @@ export interface InitApplePaySession {
     createShippingMethod?();
     createBillingContact?();
     createPaymentToken?(): ApplePayJS.ApplePayPaymentToken;
+    selectShippingMethodId?: string;
 }
 
 /**
@@ -26,6 +27,7 @@ export const setupApplePaySession = ({
   createShippingMethod,
   createBillingContact,
   createPaymentToken,
+  selectShippingMethodId,
 }: InitApplePaySession) => {
     const innerSession = new ApplePaySessionPolyfillFactory();
     // setup static properties
@@ -39,6 +41,7 @@ export const setupApplePaySession = ({
     innerSession.createBillingContact = createBillingContact;
     innerSession.createShippingContact = createShippingContact;
     innerSession.createShippingMethod = createShippingMethod;
+    innerSession.selectShippingMethodId = selectShippingMethodId;
 
     ApplePaySession.setApplePaySessionPolyfill(innerSession);
     return { ApplePaySession, ApplePayError, hasActiveSession: function() {

@@ -9,6 +9,7 @@ export class ApplePaySessionPolyfillFactory {
   isApplePaySetUp = true;
   paymentsEnabled = true;
   paymentRequest = null;
+  selectShippingMethodId = null;
   merchantIdentifier = "";
   supportedVersions = [1, 2, 3];
   validationURL = "https://apple-pay-gateway-cert.apple.com/paymentservices/startSession";
@@ -309,9 +310,10 @@ export class ApplePaySessionPolyfillFactory {
   onCompleteShippingContactSelectionV3 = function (session, update) {
 
       if (!update.errors || update.errors.length === 0) {
-        if (typeof session.onshippingmethodselected === 'function') {
+        if (typeof session.onshippingmethodselected === 'function' && this.selectShippingMethodId) { 
+            var method = update.newShippingMethods.find((m) => (m.identifier === this.selectShippingMethodId))
             var applePayPaymentShippingMethodSelectionEvent = {
-                  shippingMethod: this.createShippingMethod(session)
+                  shippingMethod: method
             }
             session.onshippingmethodselected(applePayPaymentShippingMethodSelectionEvent);
 
