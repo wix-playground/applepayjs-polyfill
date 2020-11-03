@@ -12,11 +12,15 @@ test('canMakePayments === false if paymentsEnabled === false', () => {
 })
 
 test('all callbacks are invoked with required postalAddress', () => {
-  const { ApplePaySession } = setupApplePaySession(setupSessionParams());
+  const { ApplePaySession } = setupApplePaySession({ ...setupSessionParams(), selectShippingMethodId: 'id' });
   const payRequest = aPaymentRequestBuilder().withPostalAddress().build();
   const session = new ApplePaySession(3, payRequest);
   const spyMethodChange = jest.fn().mockImplementation(() => session.completeShippingMethodSelection({}))
-  const spyContactChange = jest.fn().mockImplementation(() => session.completeShippingContactSelection({}));
+  const spyContactChange = jest.fn().mockImplementation(() => session.completeShippingContactSelection({
+    newShippingMethods: [{
+      identified: 'id'
+    }]
+  }));
   const spyAuthorize = jest.fn();
 
   session.onvalidatemerchant = () => session.completeMerchantValidation({}) ;
