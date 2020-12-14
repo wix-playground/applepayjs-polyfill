@@ -51,3 +51,27 @@ test('onshippingcontactselected is not invoked without required postalAddress', 
   expect(spyMethodChange).not.toBeCalled();
   expect(spyAuthorize).toBeCalled();
 })
+
+test('getShippingMethods() should return all available methods from internal state', () => {
+  const { ApplePaySession, getShippingMethods } = setupApplePaySession({...setupSessionParams(), selectShippingMethodId: 'id' });
+  const payRequest = aPaymentRequestBuilder().withPostalAddress().build();
+  const session = new ApplePaySession(3, payRequest);
+  const spyMethodChange = jest.fn().mockImplementation(() => session.completeShippingMethodSelection({}))
+  const spyContactChange = jest.fn().mockImplementation(() => session.completeShippingContactSelection({
+    newShippingMethods: [{
+      identified: 'id'
+    }]
+  }));
+  const spyAuthorize = jest.fn();
+
+  session.onvalidatemerchant = () => session.completeMerchantValidation({}) ;
+  session.onshippingcontactselected = spyContactChange;
+  session.onshippingmethodselected = spyMethodChange;
+  session.onpaymentauthorized = spyAuthorize
+  session.begin();
+  expect(spyContactChange).toBeCalled();
+  expect(spyMethodChange).toBeCalled();
+  expect(getShippingMethods()).toEqual([{
+    identified: 'id'
+  }])
+})

@@ -7,6 +7,7 @@ import { ApplePaySession } from './ApplePaySession';
 export class ApplePaySessionPolyfillFactory {
   hasActiveSession = false;
   isApplePaySetUp = true;
+  shippingMethods = null;
   paymentsEnabled = true;
   paymentRequest = null;
   selectShippingMethodId = null;
@@ -311,6 +312,7 @@ export class ApplePaySessionPolyfillFactory {
 
       if (!update.errors || update.errors.length === 0) {
         if (typeof session.onshippingmethodselected === 'function' && this.selectShippingMethodId) { 
+            this.shippingMethods = update.newShippingMethods;
             var method = update.newShippingMethods.find((m) => (m.identifier === this.selectShippingMethodId))
             var applePayPaymentShippingMethodSelectionEvent = {
                   shippingMethod: method
