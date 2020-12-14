@@ -48,9 +48,7 @@ export const setupApplePaySession = ({
         return innerSession.hasActiveSession
     }, getShippingMethods() {
         return innerSession.shippingMethods;
-    }, getPaymentAmount() {
-        return innerSession.paymentAmount;
-    }, getPaymentBreakdown() {
-        return innerSession.paymentBreakdown;
+    }, getLineItems() {
+        return innerSession.lineItems;
     }};
 }

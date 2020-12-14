@@ -81,12 +81,13 @@ test('getPaymentAmount() and getPaymentBreakdown() should return data from inter
   const NEW_SHIPPING_METHODS = [{
     identified: 'id'
   }];
-  const NEW_PRICE_BREAKDOWN = {
-    itemsTotal: '55',
-    tax: '25',
-    shipping: '20'
-  }
-  const { ApplePaySession, getShippingMethods, getPaymentAmount, getPaymentBreakdown } = setupApplePaySession({...setupSessionParams(), selectShippingMethodId: 'id' });
+  const NEW_LINE_ITEMS: ApplePayJS.ApplePayLineItem[] = [
+    {
+      amount: '1',
+      label: 'lbl'
+    }
+  ]
+  const { ApplePaySession, getShippingMethods, getLineItems } = setupApplePaySession({...setupSessionParams(), selectShippingMethodId: 'id' });
   const payRequest = aPaymentRequestBuilder().withPostalAddress().build();
   const session = new ApplePaySession(3, payRequest);
   const spyMethodChange = jest.fn().mockImplementation(() => session.completeShippingMethodSelection({
@@ -94,7 +95,7 @@ test('getPaymentAmount() and getPaymentBreakdown() should return data from inter
   const spyContactChange = jest.fn().mockImplementation(() => session.completeShippingContactSelection({
     paymentAmount: NEW_AMOUNT,
     newShippingMethods: NEW_SHIPPING_METHODS,
-    paymentBreakdown: NEW_PRICE_BREAKDOWN,
+    newLineItems: NEW_LINE_ITEMS,
   }));
   const spyAuthorize = jest.fn();
 
@@ -106,6 +107,5 @@ test('getPaymentAmount() and getPaymentBreakdown() should return data from inter
   expect(spyContactChange).toBeCalled();
   expect(spyMethodChange).toBeCalled();
   expect(getShippingMethods()).toEqual(NEW_SHIPPING_METHODS)
-  expect(getPaymentAmount()).toBe(NEW_AMOUNT);
-  expect(getPaymentBreakdown()).toBe(NEW_PRICE_BREAKDOWN)
+  expect(getLineItems()).toBe(NEW_LINE_ITEMS)
 })
