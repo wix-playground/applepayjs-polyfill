@@ -9,6 +9,7 @@ export class ApplePaySessionPolyfillFactory {
   isApplePaySetUp = true;
   /* consumer's passed data */
   shippingMethods = null;
+  total: ApplePayJS.ApplePayLineItem;
   lineItems: ApplePayJS.ApplePayLineItem[] = null;
   /* consumer's passed data */
   paymentsEnabled = true;
@@ -317,7 +318,8 @@ export class ApplePaySessionPolyfillFactory {
         if (typeof session.onshippingmethodselected === 'function' && this.selectShippingMethodId) { 
             this.shippingMethods = update.newShippingMethods;
             this.lineItems = update.newLineItems;
-
+            this.total = update.newTotal;
+            
             var method = update.newShippingMethods.find((m) => (m.identifier === this.selectShippingMethodId))
             var applePayPaymentShippingMethodSelectionEvent = {
                   shippingMethod: method

@@ -77,23 +77,26 @@ test('getShippingMethods() should return all available methods from internal sta
   expect(getShippingMethods()).toEqual(NEW_SHIPPING_METHODS)
 })
 test('getPaymentAmount() and getPaymentBreakdown() should return data from internal state that consumer has passed', () => {
-  const NEW_AMOUNT = 100
+  const NEW_TOTAL: ApplePayJS.ApplePayLineItem = {
+    amount: '10',
+    label: 'total'
+  }
   const NEW_SHIPPING_METHODS = [{
     identified: 'id'
   }];
   const NEW_LINE_ITEMS: ApplePayJS.ApplePayLineItem[] = [
     {
-      amount: '1',
-      label: 'lbl'
+      amount: '10',
+      label: 'itemsTotal'
     }
   ]
-  const { ApplePaySession, getShippingMethods, getLineItems } = setupApplePaySession({...setupSessionParams(), selectShippingMethodId: 'id' });
+  const { ApplePaySession, getShippingMethods, getLineItems, getTotal } = setupApplePaySession({...setupSessionParams(), selectShippingMethodId: 'id' });
   const payRequest = aPaymentRequestBuilder().withPostalAddress().build();
   const session = new ApplePaySession(3, payRequest);
   const spyMethodChange = jest.fn().mockImplementation(() => session.completeShippingMethodSelection({
   }))
   const spyContactChange = jest.fn().mockImplementation(() => session.completeShippingContactSelection({
-    paymentAmount: NEW_AMOUNT,
+    newTotal: NEW_TOTAL,
     newShippingMethods: NEW_SHIPPING_METHODS,
     newLineItems: NEW_LINE_ITEMS,
   }));
@@ -108,4 +111,5 @@ test('getPaymentAmount() and getPaymentBreakdown() should return data from inter
   expect(spyMethodChange).toBeCalled();
   expect(getShippingMethods()).toEqual(NEW_SHIPPING_METHODS)
   expect(getLineItems()).toBe(NEW_LINE_ITEMS)
+  expect(getTotal()).toBe(NEW_TOTAL)
 })

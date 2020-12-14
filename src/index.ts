@@ -50,5 +50,7 @@ export const setupApplePaySession = ({
         return innerSession.shippingMethods;
     }, getLineItems() {
         return innerSession.lineItems;
+    }, getTotal() {
+        return innerSession.total;
     }};
 }
