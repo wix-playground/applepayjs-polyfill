@@ -53,14 +53,17 @@ test('onshippingcontactselected is not invoked without required postalAddress', 
 })
 
 test('getShippingMethods() should return all available methods from internal state', () => {
+  const NEW_SHIPPING_METHODS = [{
+    identified: 'id'
+  }];
   const { ApplePaySession, getShippingMethods } = setupApplePaySession({...setupSessionParams(), selectShippingMethodId: 'id' });
   const payRequest = aPaymentRequestBuilder().withPostalAddress().build();
   const session = new ApplePaySession(3, payRequest);
-  const spyMethodChange = jest.fn().mockImplementation(() => session.completeShippingMethodSelection({}))
+  const spyMethodChange = jest.fn().mockImplementation(() => session.completeShippingMethodSelection({
+  }))
   const spyContactChange = jest.fn().mockImplementation(() => session.completeShippingContactSelection({
-    newShippingMethods: [{
-      identified: 'id'
-    }]
+    paymentAmount: 100,
+    newShippingMethods: NEW_SHIPPING_METHODS,
   }));
   const spyAuthorize = jest.fn();
 
@@ -71,7 +74,38 @@ test('getShippingMethods() should return all available methods from internal sta
   session.begin();
   expect(spyContactChange).toBeCalled();
   expect(spyMethodChange).toBeCalled();
-  expect(getShippingMethods()).toEqual([{
+  expect(getShippingMethods()).toEqual(NEW_SHIPPING_METHODS)
+})
+test('getPaymentAmount() and getPaymentBreakdown() should return data from internal state that consumer has passed', () => {
+  const NEW_AMOUNT = 100
+  const NEW_SHIPPING_METHODS = [{
     identified: 'id'
-  }])
+  }];
+  const NEW_PRICE_BREAKDOWN = {
+    itemsTotal: '55',
+    tax: '25',
+    shipping: '20'
+  }
+  const { ApplePaySession, getShippingMethods, getPaymentAmount, getPaymentBreakdown } = setupApplePaySession({...setupSessionParams(), selectShippingMethodId: 'id' });
+  const payRequest = aPaymentRequestBuilder().withPostalAddress().build();
+  const session = new ApplePaySession(3, payRequest);
+  const spyMethodChange = jest.fn().mockImplementation(() => session.completeShippingMethodSelection({
+  }))
+  const spyContactChange = jest.fn().mockImplementation(() => session.completeShippingContactSelection({
+    paymentAmount: NEW_AMOUNT,
+    newShippingMethods: NEW_SHIPPING_METHODS,
+    paymentBreakdown: NEW_PRICE_BREAKDOWN,
+  }));
+  const spyAuthorize = jest.fn();
+
+  session.onvalidatemerchant = () => session.completeMerchantValidation({}) ;
+  session.onshippingcontactselected = spyContactChange;
+  session.onshippingmethodselected = spyMethodChange;
+  session.onpaymentauthorized = spyAuthorize
+  session.begin();
+  expect(spyContactChange).toBeCalled();
+  expect(spyMethodChange).toBeCalled();
+  expect(getShippingMethods()).toEqual(NEW_SHIPPING_METHODS)
+  expect(getPaymentAmount()).toBe(NEW_AMOUNT);
+  expect(getPaymentBreakdown()).toBe(NEW_PRICE_BREAKDOWN)
 })

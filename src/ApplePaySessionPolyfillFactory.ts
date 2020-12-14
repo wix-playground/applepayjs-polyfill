@@ -7,7 +7,11 @@ import { ApplePaySession } from './ApplePaySession';
 export class ApplePaySessionPolyfillFactory {
   hasActiveSession = false;
   isApplePaySetUp = true;
+  /* consumer's passed data */
   shippingMethods = null;
+  paymentAmount = null;
+  paymentBreakdown = null;
+  /* consumer's passed data */
   paymentsEnabled = true;
   paymentRequest = null;
   selectShippingMethodId = null;
@@ -313,6 +317,9 @@ export class ApplePaySessionPolyfillFactory {
       if (!update.errors || update.errors.length === 0) {
         if (typeof session.onshippingmethodselected === 'function' && this.selectShippingMethodId) { 
             this.shippingMethods = update.newShippingMethods;
+            this.paymentAmount = update.paymentAmount;
+            this.paymentBreakdown = update.paymentBreakdown;
+
             var method = update.newShippingMethods.find((m) => (m.identifier === this.selectShippingMethodId))
             var applePayPaymentShippingMethodSelectionEvent = {
                   shippingMethod: method
